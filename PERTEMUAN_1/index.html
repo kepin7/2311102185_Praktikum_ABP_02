@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ramadan Mubarak 1446 H</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ░░ STAR CANVAS ░░ -->
+  <canvas id="starCanvas"></canvas>
+
+  <!-- ░░ FLOATING LANTERNS ░░ -->
+  <div class="lanterns-wrap" aria-hidden="true">
+    <div class="lantern lantern-1"><i class="bi bi-lamp-fill"></i></div>
+    <div class="lantern lantern-2"><i class="bi bi-lamp-fill"></i></div>
+    <div class="lantern lantern-3"><i class="bi bi-lamp-fill"></i></div>
+  </div>
+
+  <!-- ░░ NAVBAR ░░ -->
+  <nav class="navbar navbar-expand-lg sticky-top py-3" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <i class="bi bi-moon-stars-fill brand-icon"></i>
+        <span>Ramadan 1446 H</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <i class="bi bi-list text-light fs-3"></i>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+        <ul class="navbar-nav gap-2">
+          <li class="nav-item"><a class="nav-link" href="#hero">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="#jadwal">Jadwal</a></li>
+          <li class="nav-item"><a class="nav-link" href="#doa">Doa</a></li>
+          <li class="nav-item"><a class="nav-link" href="#amalan">Amalan</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ░░ HERO ░░ -->
+  <section id="hero" class="hero-section d-flex align-items-center justify-content-center text-center">
+    <div class="container">
+      <div class="hero-crescent mb-3" aria-hidden="true">☽</div>
+      <p class="hero-arabic">رَمَضَانُ مُبَارَك</p>
+      <h1 class="hero-title">Ramadan Mubarak</h1>
+      <p class="hero-sub lora-italic">Selamat menunaikan ibadah puasa Ramadan 1446 H.<br>Semoga amal ibadah kita diterima Allah SWT.</p>
+
+      <!-- Countdown -->
+      <div class="countdown-wrap d-flex justify-content-center gap-3 mt-4 mb-5" id="countdown">
+        <div class="cd-box">
+          <span id="cd-d" class="cd-num">00</span>
+          <span class="cd-lbl">Hari</span>
+        </div>
+        <div class="cd-box">
+          <span id="cd-h" class="cd-num">00</span>
+          <span class="cd-lbl">Jam</span>
+        </div>
+        <div class="cd-box">
+          <span id="cd-m" class="cd-num">00</span>
+          <span class="cd-lbl">Menit</span>
+        </div>
+        <div class="cd-box">
+          <span id="cd-s" class="cd-num">00</span>
+          <span class="cd-lbl">Detik</span>
+        </div>
+      </div>
+      <p class="cd-caption" id="cdCaption">Menghitung akhir Ramadan...</p>
+
+      <!-- THR BUTTON -->
+      <button class="btn btn-thr mt-3" id="btnTHR" data-bs-toggle="modal" data-bs-target="#thrModal">
+        <i class="bi bi-gift-fill me-2"></i>Klaim THR Ramadan Kamu
+        <span class="btn-thr-shine"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ░░ JADWAL ░░ -->
+  <section id="jadwal" class="py-5">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <i class="bi bi-clock-history section-icon"></i>
+        <h2 class="section-title">Jadwal Imsakiyah</h2>
+        <p class="section-sub">Jakarta — Hari ini</p>
+      </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+          <div class="waktu-card text-center p-4">
+            <i class="bi bi-sunrise-fill waktu-icon"></i>
+            <h5 class="waktu-nama">Imsak</h5>
+            <p class="waktu-jam">04:28</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="waktu-card text-center p-4">
+            <i class="bi bi-brightness-high-fill waktu-icon"></i>
+            <h5 class="waktu-nama">Subuh</h5>
+            <p class="waktu-jam">04:38</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="waktu-card text-center p-4">
+            <i class="bi bi-sunset-fill waktu-icon"></i>
+            <h5 class="waktu-nama">Maghrib</h5>
+            <p class="waktu-jam">18:04</p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="waktu-card text-center p-4">
+            <i class="bi bi-moon-fill waktu-icon"></i>
+            <h5 class="waktu-nama">Isya</h5>
+            <p class="waktu-jam">19:17</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ DOA ░░ -->
+  <section id="doa" class="py-5 doa-section">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <i class="bi bi-book-half section-icon"></i>
+        <h2 class="section-title">Doa Ramadan</h2>
+      </div>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-6">
+          <div class="doa-card p-4">
+            <span class="doa-badge">Berbuka</span>
+            <p class="doa-arab text-end">اللّهُمَّ لَكَ صُمْتُ وَبِكَ آمَنْتُ وَعَلَى رِزْقِكَ أَفْطَرْتُ</p>
+            <p class="doa-latin lora-italic">Allāhumma laka ṣumtu wa bika āmantu wa ʿalā rizqika afṭartu</p>
+            <p class="doa-terjemah">Ya Allah, karena-Mu aku berpuasa, kepada-Mu aku beriman, dan dengan rezeki-Mu aku berbuka.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="doa-card p-4">
+            <span class="doa-badge">Sahur</span>
+            <p class="doa-arab text-end">نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ رَمَضَانَ هَذِهِ السَّنَةِ لِلَّهِ تَعَالَى</p>
+            <p class="doa-latin lora-italic">Nawaitu ṣawma ghadin ʿan adāʾi farḍi Ramaḍāna hādzihis-sanati lillāhi taʿālā</p>
+            <p class="doa-terjemah">Aku niat berpuasa esok hari untuk menunaikan fardhu Ramadan tahun ini karena Allah Ta'ala.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ AMALAN ░░ -->
+  <section id="amalan" class="py-5">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <i class="bi bi-stars section-icon"></i>
+        <h2 class="section-title">Amalan Utama</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="0">
+          <div class="amalan-card p-4 text-center">
+            <div class="amalan-icon-wrap mx-auto mb-3"><i class="bi bi-journal-bookmark-fill"></i></div>
+            <h5>Tadarus Al-Qur'an</h5>
+            <p class="small opacity-75">Membaca dan memahami Al-Qur'an setiap hari untuk mendekatkan diri kepada Allah.</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="150">
+          <div class="amalan-card p-4 text-center">
+            <div class="amalan-icon-wrap mx-auto mb-3"><i class="bi bi-people-fill"></i></div>
+            <h5>Shalat Tarawih</h5>
+            <p class="small opacity-75">Mendirikan shalat tarawih berjamaah sebagai ibadah sunnah yang utama di bulan Ramadan.</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="amalan-card p-4 text-center">
+            <div class="amalan-icon-wrap mx-auto mb-3"><i class="bi bi-heart-fill"></i></div>
+            <h5>Sedekah & Zakat</h5>
+            <p class="small opacity-75">Berbagi kepada sesama, pahala sedekah di bulan Ramadan berlipat ganda.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="py-4 text-center footer-section">
+    <p class="mb-0 opacity-75"><i class="bi bi-moon-stars-fill me-2"></i>Ramadan 1446 H — Semoga Diterima Amal Ibadah Kita</p>
+  </footer>
+
+  <!-- ══════════════════════════════════
+       THR MODAL
+  ══════════════════════════════════ -->
+  <div class="modal fade" id="thrModal" tabindex="-1" aria-labelledby="thrModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content thr-modal-content">
+
+        <!-- confetti canvas inside modal -->
+        <canvas id="confettiCanvas"></canvas>
+
+        <!-- floating coins -->
+        <div class="coin-shower" id="coinShower" aria-hidden="true"></div>
+
+        <div class="modal-body text-center px-4 py-5">
+          <!-- crescent + star -->
+          <div class="thr-crescent-wrap mb-2" aria-hidden="true">
+            <span class="thr-crescent">☽</span>
+            <span class="thr-star">✦</span>
+          </div>
+
+          <h4 class="thr-label mb-1">Selamat! 🎉</h4>
+          <h2 class="thr-headline">Anda Mendapatkan<br><span class="thr-accent">THR Ramadan!</span></h2>
+
+          <div class="thr-envelope my-4" id="thrEnvelope">
+            <div class="envelope-body">
+              <div class="envelope-flap"></div>
+              <div class="envelope-front">
+                <i class="bi bi-envelope-heart-fill"></i>
+              </div>
+            </div>
+            <p class="envelope-hint">Klik untuk buka amplop</p>
+          </div>
+
+          <!-- amount (hidden until envelope clicked) -->
+          <div class="thr-amount-wrap d-none" id="thrAmount">
+            <p class="thr-amount-label">Nominal THR kamu</p>
+            <p class="thr-amount-value" id="thrValue">Rp 0</p>
+            <div class="thr-progress-wrap mt-3">
+              <div class="progress thr-progress">
+                <div class="progress-bar thr-progress-bar" id="thrBar" role="progressbar" style="width:0%"></div>
+              </div>
+              <p class="thr-progress-label mt-1 small">Keberkahanmu: <span id="thrPercent">0</span>%</p>
+            </div>
+          </div>
+
+          <p class="thr-quote lora-italic mt-3">
+            "Barangsiapa memberi makan orang yang berpuasa,<br>maka baginya pahala seperti orang yang berpuasa itu."
+          </p>
+
+          <button type="button" class="btn btn-thr-close mt-3" data-bs-dismiss="modal">
+            <i class="bi bi-check2-circle me-2"></i>Terima Kasih, Ya Allah!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
