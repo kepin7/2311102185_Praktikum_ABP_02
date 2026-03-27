@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIMAS · Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="toasts"></div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="/dashboard" class="nav-brand">
+    <div class="nav-brand-icon">🎓</div>
+    <div class="nav-brand-text">
+      <div class="nav-brand-name">SIMAS</div>
+      <div class="nav-brand-sub">Telkom University</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="/dashboard" class="nav-link"><i class="bi bi-grid-fill"></i><span>Dashboard</span></a>
+    <a href="/" class="nav-link"><i class="bi bi-person-plus-fill"></i><span>Input Mahasiswa</span></a>
+    <a href="/data" class="nav-link"><i class="bi bi-table"></i><span>Data Mahasiswa</span></a>
+    <a href="/dashboard" class="nav-link"><i class="bi bi-bar-chart-fill"></i><span>Statistik</span></a>
+  </div>
+  <div class="nav-actions">
+    <a href="/" class="btn btn-red btn-sm"><i class="bi bi-plus-lg"></i> Tambah</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="dash-hero">
+  <div>
+    <div class="dash-hero-title">Data <span class="red">Overview</span></div>
+    <div class="dash-hero-desc">Ringkasan statistik mahasiswa terdaftar — Telkom University</div>
+  </div>
+  <div class="dash-hero-right">
+    <button class="btn btn-ghost btn-sm" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6)" onclick="loadAll()">
+      <i class="bi bi-arrow-clockwise"></i> Refresh
+    </button>
+    <a href="/data" class="btn btn-dark btn-sm" style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.15)">
+      <i class="bi bi-table"></i> Kelola Data
+    </a>
+  </div>
+</div>
+
+<!-- METRIC STRIP -->
+<div class="metric-strip">
+  <div class="metric-cell" style="--cell-color:var(--red)">
+    <div class="metric-tag">Total Mahasiswa</div>
+    <div class="metric-num" id="mTotal">–</div>
+    <div class="metric-sub">Seluruh program studi</div>
+  </div>
+  <div class="metric-cell" style="--cell-color:#16A34A">
+    <div class="metric-tag">Mahasiswa Aktif</div>
+    <div class="metric-num" id="mAktif">–</div>
+    <div class="metric-sub">Aktif kuliah</div>
+  </div>
+  <div class="metric-cell" style="--cell-color:#D97706">
+    <div class="metric-tag">Sedang Cuti</div>
+    <div class="metric-num" id="mCuti">–</div>
+    <div class="metric-sub">Non-aktif sementara</div>
+  </div>
+  <div class="metric-cell" style="--cell-color:var(--blue)">
+    <div class="metric-tag">Rata-rata IPK</div>
+    <div class="metric-num" id="mIpk">–</div>
+    <div class="metric-sub">Skala 0.00 – 4.00</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="dash-content">
+  <!-- Row 1: 2 charts + sidebar -->
+  <div class="dash-grid stagger">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="card-title">Program Studi</div><div class="card-sub">Distribusi per prodi</div></div>
+      </div>
+      <div class="card-body"><div class="chart-box"><canvas id="cProdi"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div><div class="card-title">Per Angkatan</div><div class="card-sub">Jumlah mahasiswa tiap tahun</div></div>
+      </div>
+      <div class="card-body"><div class="chart-box"><canvas id="cAngkatan"></canvas></div></div>
+    </div>
+    <!-- Sidebar: status + fakultas mini -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card" style="flex:1">
+        <div class="card-head">
+          <div><div class="card-title">Status</div><div class="card-sub">Aktif / Cuti / Lulus</div></div>
+        </div>
+        <div class="card-body"><div class="chart-box" style="height:180px"><canvas id="cStatus"></canvas></div></div>
+      </div>
+      <!-- Quick links -->
+      <div class="card">
+        <div class="card-body" style="padding:16px 20px;display:flex;flex-direction:column;gap:8px">
+          <a href="/" class="btn btn-red" style="justify-content:center"><i class="bi bi-person-plus-fill"></i> Tambah Mahasiswa</a>
+          <a href="/data" class="btn btn-ghost" style="justify-content:center"><i class="bi bi-table"></i> Kelola Semua Data</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: full-width chart + recent table -->
+  <div class="dash-grid stagger" style="margin-top:20px">
+    <div class="card dash-grid-wide">
+      <div class="card-head">
+        <div><div class="card-title">Sebaran per Fakultas</div><div class="card-sub">Mahasiswa tiap fakultas</div></div>
+      </div>
+      <div class="card-body"><div class="chart-box"><canvas id="cFak"></canvas></div></div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column">
+      <div class="card-head" style="padding-bottom:12px">
+        <div><div class="card-title">Lulus Terbanyak</div><div class="card-sub">Top IPK</div></div>
+      </div>
+      <div class="card-body" style="padding-top:0;flex:1;overflow:auto">
+        <table class="recent-tbl">
+          <thead><tr><th>Nama</th><th>Prodi</th><th>IPK</th></tr></thead>
+          <tbody id="topIpkBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 3: Recent entries -->
+  <div class="card stagger" style="margin-top:20px">
+    <div class="card-head">
+      <div><div class="card-title">Entri Terbaru</div><div class="card-sub">5 mahasiswa terakhir ditambahkan</div></div>
+      <a href="/data" class="btn btn-ghost btn-sm"><i class="bi bi-arrow-right"></i> Lihat Semua</a>
+    </div>
+    <div class="card-body" style="padding-top:12px">
+      <table class="recent-tbl" style="width:100%">
+        <thead><tr><th>NIM</th><th>Nama</th><th>Program Studi</th><th>Angkatan</th><th>IPK</th><th>Status</th></tr></thead>
+        <tbody id="recentBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/js/utils.js"></script>
+<script>
+Chart.defaults.font.family='DM Sans'; Chart.defaults.color='#B0A2A6';
+const PAL=['#C8102E','#E85D24','#D97706','#1544A8','#0F6F4F','#6D28D9','#0284C7'];
+const C={};
+function mk(id,cfg){if(C[id])C[id].destroy();C[id]=new Chart(document.getElementById(id),cfg);}
+
+function loadAll(){
+  API.get('/stats').done(s=>{
+    const d=s.data;
+    $('#mTotal').text(d.total);$('#mAktif').text(d.aktif);$('#mCuti').text(d.cuti);$('#mIpk').text(d.avgIpk);
+
+    mk('cProdi',{type:'doughnut',data:{labels:Object.keys(d.byProdi),datasets:[{data:Object.values(d.byProdi),backgroundColor:PAL,borderWidth:3,borderColor:'#fff',hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{padding:12,font:{size:11},usePointStyle:true}}}}});
+
+    const ak=Object.keys(d.byAngkatan).sort();
+    mk('cAngkatan',{type:'bar',data:{labels:ak,datasets:[{label:'Mahasiswa',data:ak.map(k=>d.byAngkatan[k]),backgroundColor:'#C8102E',borderRadius:7,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(176,162,166,0.12)'},ticks:{stepSize:1}},x:{grid:{display:false}}}}});
+
+    mk('cStatus',{type:'pie',data:{labels:['Aktif','Cuti','Lulus'],datasets:[{data:[d.aktif,d.cuti,d.lulus],backgroundColor:['#C8102E','#D97706','#1544A8'],borderWidth:3,borderColor:'#fff',hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:12,font:{size:11},usePointStyle:true}}}}});
+  });
+
+  API.get('/mahasiswa').done(r=>{
+    const data=r.data;
+    const byFak={};
+    data.forEach(m=>{const k=getFakultas(m.prodi);byFak[k]=(byFak[k]||0)+1;});
+    const fk=Object.keys(byFak);
+    mk('cFak',{type:'bar',data:{labels:fk,datasets:[{label:'Mahasiswa',data:fk.map(k=>byFak[k]),backgroundColor:PAL,borderRadius:7,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(176,162,166,0.12)'},ticks:{stepSize:1}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+
+    // Top IPK
+    const top=[...data].sort((a,b)=>b.ipk-a.ipk).slice(0,5);
+    const $ti=$('#topIpkBody').empty();
+    top.forEach(m=>$ti.append(`<tr><td><strong>${m.nama}</strong></td><td style="font-size:11.5px;color:var(--mist-4)">${m.prodi.substring(0,20)}…</td><td>${ipkBar(m.ipk)}</td></tr>`));
+
+    // Recent
+    const rec=data.slice(-5).reverse();
+    const $rb=$('#recentBody').empty();
+    rec.forEach(m=>$rb.append(`<tr><td>${nimBadge(m.nim)}</td><td><strong>${m.nama}</strong></td><td style="font-size:12px">${m.prodi}</td><td>${m.angkatan}</td><td>${ipkBar(m.ipk)}</td><td>${statusBadge(m.status)}</td></tr>`));
+  });
+}
+$(loadAll);
+</script>
+</body>
+</html>

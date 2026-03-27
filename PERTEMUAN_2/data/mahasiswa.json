@@ -1,0 +1,46 @@
+[
+  {
+    "id": "5579c5a7",
+    "nim": "2311102185",
+    "nama": "Hizkia Kevin Octaviano",
+    "prodi": "S1 Informatika (Teknik Informatika)",
+    "angkatan": 2023,
+    "ipk": 4,
+    "status": "Aktif",
+    "email": "hizkiakevin8@gmail.com",
+    "no_hp": "081328157664"
+  },
+  {
+    "id": "2dc46573",
+    "nim": "2311102182",
+    "nama": "slamet",
+    "prodi": "S1 Sains Data",
+    "angkatan": 2024,
+    "ipk": 3.5,
+    "status": "Aktif",
+    "email": "slamet@student.ac.id",
+    "no_hp": "08123456789"
+  },
+  {
+    "id": "9eed9793",
+    "nim": "2311102180",
+    "nama": "budi",
+    "prodi": "S1 Sistem Informasi",
+    "angkatan": 2023,
+    "ipk": 3.8,
+    "status": "Cuti",
+    "email": "budi@student.ac.id",
+    "no_hp": "08976543210"
+  },
+  {
+    "id": "a359c491",
+    "nim": "2311102188",
+    "nama": "ipuk",
+    "prodi": "S1 Desain Komunikasi Visual (DKV)",
+    "angkatan": 2021,
+    "ipk": 3.6,
+    "status": "Lulus",
+    "email": "ipuk@student.ac.id",
+    "no_hp": "08537815548"
+  }
+]

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIMAS · Input Mahasiswa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="toasts"></div>
+
+<nav class="topnav">
+  <a href="/dashboard" class="nav-brand">
+    <div class="nav-brand-icon">🎓</div>
+    <div class="nav-brand-text">
+      <div class="nav-brand-name">SIMAS</div>
+      <div class="nav-brand-sub">Telkom University</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="/dashboard" class="nav-link"><i class="bi bi-grid-fill"></i><span>Dashboard</span></a>
+    <a href="/" class="nav-link"><i class="bi bi-person-plus-fill"></i><span>Input Mahasiswa</span></a>
+    <a href="/data" class="nav-link"><i class="bi bi-table"></i><span>Data Mahasiswa</span></a>
+    <a href="/dashboard" class="nav-link"><i class="bi bi-bar-chart-fill"></i><span>Statistik</span></a>
+  </div>
+  <div class="nav-actions">
+    <a href="/data" class="btn btn-ghost btn-sm" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6)"><i class="bi bi-table"></i> Lihat Data</a>
+  </div>
+</nav>
+
+<div class="form-shell">
+  <div class="form-shell-inner">
+    <div class="form-page-title">Daftar <span class="red">Mahasiswa Baru</span></div>
+    <div class="form-page-desc">Isi form di bawah untuk menambahkan data mahasiswa ke sistem SIMAS.</div>
+
+    <!-- Step bar -->
+    <div class="step-bar">
+      <div class="step-cell active" id="sc1">
+        <div class="step-num"><span>1</span></div>
+        <div class="step-label">Identitas</div>
+      </div>
+      <div class="step-cell" id="sc2">
+        <div class="step-num"><span>2</span></div>
+        <div class="step-label">Akademik</div>
+      </div>
+      <div class="step-cell" id="sc3">
+        <div class="step-num"><span>3</span></div>
+        <div class="step-label">Konfirmasi</div>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="fcard">
+      <div class="fcard-header">
+        <div>
+          <div class="fcard-title" id="fCardTitle">Data Identitas</div>
+          <div class="fcard-sub">Langkah 1 dari 3 — Informasi dasar mahasiswa</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--mist-4);background:var(--mist);padding:5px 10px;border-radius:6px"></div>
+      </div>
+      <div class="fcard-body">
+        <form id="fmhs" novalidate>
+          <!-- SEC 1 -->
+          <div class="form-section active" id="sec1">
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">NIM <span class="req">*</span></label>
+                <input id="nim" class="field-input" placeholder="1301234567" data-req maxlength="15">
+                <div class="field-err">NIM wajib diisi</div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Nama Lengkap <span class="req">*</span></label>
+                <input id="nama" class="field-input" placeholder="Nama sesuai KTP" data-req>
+                <div class="field-err">Nama wajib diisi</div>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field-group">
+                <label class="field-label">Email <span class="req">*</span></label>
+                <input type="email" id="email" class="field-input" placeholder="nim@student.telkomuniversity.ac.id" data-req>
+                <div class="field-err">Email wajib diisi</div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">No. HP <span class="req">*</span></label>
+                <input type="tel" id="nohp" class="field-input" placeholder="08xxxxxxxxxx" data-req>
+                <div class="field-err">No. HP wajib diisi</div>
+              </div>
+            </div>
+            <div class="form-nav">
+              <div></div>
+              <button type="button" class="btn btn-red" id="next1">Selanjutnya <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- SEC 2 -->
+          <div class="form-section" id="sec2">
+            <div class="field-row-1">
+              <div class="field-group">
+                <label class="field-label">Program Studi <span class="req">*</span></label>
+                <select id="prodi" class="field-input" data-req></select>
+                <div class="field-err">Program studi wajib dipilih</div>
+              </div>
+            </div>
+            <div class="field-row-3">
+              <div class="field-group">
+                <label class="field-label">Angkatan <span class="req">*</span></label>
+                <select id="angkatan" class="field-input" data-req></select>
+                <div class="field-err">Wajib dipilih</div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">IPK <span class="req">*</span></label>
+                <input type="number" id="ipk" class="field-input" placeholder="3.75" step="0.01" min="0" max="4" data-req>
+                <div class="field-err">IPK 0–4</div>
+              </div>
+              <div class="field-group">
+                <label class="field-label">Status <span class="req">*</span></label>
+                <select id="status" class="field-input" data-req>
+                  <option value="">— Pilih —</option>
+                  <option>Aktif</option><option>Cuti</option><option>Lulus</option>
+                </select>
+                <div class="field-err">Wajib dipilih</div>
+              </div>
+            </div>
+            <div class="ipk-box" id="ipkPrev">
+              <div class="ipk-box-label">Preview IPK</div>
+              <div id="ipkPrevBar"></div>
+            </div>
+            <div class="form-nav">
+              <button type="button" class="btn btn-ghost" id="back2"><i class="bi bi-arrow-left"></i> Kembali</button>
+              <button type="button" class="btn btn-red" id="next2">Selanjutnya <i class="bi bi-arrow-right"></i></button>
+            </div>
+          </div>
+
+          <!-- SEC 3 -->
+          <div class="form-section" id="sec3">
+            <div class="sec-label">Ringkasan Data</div>
+            <div class="summary-grid" id="summaryGrid"></div>
+            <div class="form-nav">
+              <button type="button" class="btn btn-ghost" id="back3"><i class="bi bi-arrow-left"></i> Kembali</button>
+              <button type="submit" class="btn btn-red" id="btnSave"><i class="bi bi-check-circle-fill"></i> Simpan Mahasiswa</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mini stats below form -->
+    <div class="form-sidebar stagger">
+      <div class="mini-stat-card">
+        <div class="num" id="mT">–</div><div class="lbl">Total Mahasiswa</div>
+      </div>
+      <div class="mini-stat-card">
+        <div class="num" style="color:var(--green)" id="mA">–</div><div class="lbl">Aktif</div>
+      </div>
+      <div class="mini-stat-card">
+        <div class="num" style="color:var(--amber)" id="mC">–</div><div class="lbl">Cuti</div>
+      </div>
+      <div class="mini-stat-card">
+        <div class="num" style="color:var(--red)" id="mI">–</div><div class="lbl">Avg IPK</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/utils.js"></script>
+<script>
+const TITLES=['Data Identitas','Data Akademik','Konfirmasi & Simpan'];
+const SUBS=['Langkah 1 dari 3 — Informasi dasar mahasiswa','Langkah 2 dari 3 — Program studi & akademik','Langkah 3 dari 3 — Periksa kembali sebelum menyimpan'];
+let step=1;
+
+function goStep(n){
+  step=n;
+  $('.form-section').removeClass('active');$(`#sec${n}`).addClass('active');
+  $('.step-cell').removeClass('active done');
+  for(let i=1;i<=3;i++){const $c=$(`#sc${i}`);if(i<n)$c.addClass('done');else if(i===n)$c.addClass('active');}
+  $('#fCardTitle').text(TITLES[n-1]);
+  $('.fcard-sub').text(SUBS[n-1]);
+}
+
+function valSec(id){
+  let ok=true;
+  $(`#${id} .field-input[data-req]`).each(function(){
+    const $e=$(this),$f=$e.siblings('.field-err');
+    if(!$e.val().trim()){$e.addClass('err').removeClass('ok');$f.addClass('show');ok=false;}
+    else{$e.removeClass('err').addClass('ok');$f.removeClass('show');}
+  });
+  return ok;
+}
+
+function buildSummary(){
+  const rows=[
+    ['NIM',$('#nim').val()],['Nama',$('#nama').val()],
+    ['Email',$('#email').val()],['No. HP',$('#nohp').val()],
+    ['Program Studi',$('#prodi').val()],['Angkatan',$('#angkatan').val()],
+    ['IPK',ipkBar($('#ipk').val())],['Status',statusBadge($('#status').val())]
+  ];
+  $('#summaryGrid').html(rows.map(([k,v])=>`<div class="s-key">${k}</div><div class="s-val">${v}</div>`).join(''));
+}
+
+$(()=>{
+  buildProdiOptions($('#prodi'));
+  buildAngkatanOptions($('#angkatan'));
+  API.get('/stats').done(s=>{const d=s.data;$('#mT').text(d.total);$('#mA').text(d.aktif);$('#mC').text(d.cuti);$('#mI').text(d.avgIpk);});
+
+  $('#ipk').on('input',function(){
+    const v=parseFloat($(this).val());
+    if(!isNaN(v)&&v>=0&&v<=4){$('#ipkPrev').addClass('show');$('#ipkPrevBar').html(ipkBar(v.toFixed(2)));}
+    else{$('#ipkPrev').removeClass('show');}
+  });
+
+  $('#next1').on('click',()=>{if(valSec('sec1'))goStep(2);else $(document.body).siToast('Lengkapi data identitas','warn');});
+  $('#back2').on('click',()=>goStep(1));
+  $('#next2').on('click',()=>{
+    if(!valSec('sec2')){$(document.body).siToast('Lengkapi data akademik','warn');return;}
+    const v=parseFloat($('#ipk').val());
+    if(isNaN(v)||v<0||v>4){$('#ipk').addClass('err');$(document.body).siToast('IPK harus 0.00 – 4.00','err');return;}
+    buildSummary();goStep(3);
+  });
+  $('#back3').on('click',()=>goStep(2));
+
+  $('#fmhs').on('submit',function(e){
+    e.preventDefault();
+    const payload={nim:$('#nim').val().trim(),nama:$('#nama').val().trim(),email:$('#email').val().trim(),no_hp:$('#nohp').val().trim(),prodi:$('#prodi').val(),angkatan:$('#angkatan').val(),ipk:parseFloat($('#ipk').val()),status:$('#status').val()};
+    $('#btnSave').prop('disabled',true).html('<i class="bi bi-hourglass-split"></i> Menyimpan…');
+    API.post('/mahasiswa',payload)
+      .done(()=>{
+        $(document.body).siToast('Mahasiswa berhasil ditambahkan!','ok');
+        $('#fmhs')[0].reset();$('#ipkPrev').removeClass('show');$('#fmhs').siReset();goStep(1);
+        API.get('/stats').done(s=>{const d=s.data;$('#mT').text(d.total);$('#mA').text(d.aktif);$('#mC').text(d.cuti);$('#mI').text(d.avgIpk);});
+      })
+      .fail(x=>$(document.body).siToast(x.responseJSON?.message||'Gagal menyimpan','err'))
+      .always(()=>$('#btnSave').prop('disabled',false).html('<i class="bi bi-check-circle-fill"></i> Simpan Mahasiswa'));
+  });
+});
+</script>
+</body>
+</html>

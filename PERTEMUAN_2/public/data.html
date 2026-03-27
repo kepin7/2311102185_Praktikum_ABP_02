@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SIMAS · Data Mahasiswa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="toasts"></div>
+
+<nav class="topnav">
+  <a href="/dashboard" class="nav-brand">
+    <div class="nav-brand-icon">🎓</div>
+    <div class="nav-brand-text">
+      <div class="nav-brand-name">SIMAS</div>
+      <div class="nav-brand-sub">Telkom University</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="/dashboard" class="nav-link"><i class="bi bi-grid-fill"></i><span>Dashboard</span></a>
+    <a href="/" class="nav-link"><i class="bi bi-person-plus-fill"></i><span>Input Mahasiswa</span></a>
+    <a href="/data" class="nav-link"><i class="bi bi-table"></i><span>Data Mahasiswa</span></a>
+    <a href="/dashboard" class="nav-link"><i class="bi bi-bar-chart-fill"></i><span>Statistik</span></a>
+  </div>
+  <div class="nav-actions">
+    <a href="/" class="btn btn-red btn-sm"><i class="bi bi-plus-lg"></i> Tambah Baru</a>
+  </div>
+</nav>
+
+<div class="data-shell">
+  <!-- Sticky sub-header -->
+  <div class="data-subheader">
+    <div>
+      <div class="data-page-title">Data <span class="red">Mahasiswa</span></div>
+    </div>
+    <div class="data-subheader-right">
+      <button class="btn btn-ghost btn-sm" id="btnRefresh"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+    </div>
+  </div>
+
+  <!-- Filter row -->
+  <div class="filter-row">
+    <span class="filter-label"><i class="bi bi-funnel-fill" style="color:var(--red)"></i> Filter</span>
+    <select id="fProdi" class="filter-sel"></select>
+    <div class="filter-divider"></div>
+    <select id="fStatus" class="filter-sel">
+      <option value="">Semua Status</option>
+      <option>Aktif</option><option>Cuti</option><option>Lulus</option>
+    </select>
+    <div class="filter-divider"></div>
+    <select id="fAngkatan" class="filter-sel"><option value="">Semua Angkatan</option></select>
+    <button class="btn btn-ghost btn-sm" id="btnResetFilter" style="margin-left:auto">
+      <i class="bi bi-x-circle"></i> Reset
+    </button>
+    <span id="totalChip" style="font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--ink);color:#FF4D6D;padding:5px 12px;border-radius:99px;font-weight:700">– records</span>
+  </div>
+
+  <!-- Table content -->
+  <div class="data-content">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="card-title">Tabel Mahasiswa</div><div class="card-sub">CRUD · DataTables jQuery Plugin · Format JSON</div></div>
+      </div>
+      <div class="card-body">
+        <div class="table-wrap" style="overflow-x:auto">
+          <table id="dtMain" class="tbl" style="width:100%">
+            <thead>
+              <tr>
+                <th>#</th><th>NIM</th><th>Nama Lengkap</th><th>Program Studi</th>
+                <th>Angkatan</th><th>IPK</th><th>Status</th><th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT -->
+<div class="modal fade modal-custom" id="mEdit" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Data Mahasiswa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body">
+        <form id="fEdit" novalidate>
+          <input type="hidden" id="eId">
+          <div class="row g-3">
+            <div class="col-md-6"><div class="field-group"><label class="field-label">NIM <span class="req">*</span></label><input id="eNim" class="field-input" data-req maxlength="15"><div class="field-err">NIM wajib diisi</div></div></div>
+            <div class="col-md-6"><div class="field-group"><label class="field-label">Nama <span class="req">*</span></label><input id="eNama" class="field-input" data-req><div class="field-err">Nama wajib diisi</div></div></div>
+            <div class="col-12"><div class="field-group"><label class="field-label">Program Studi <span class="req">*</span></label><select id="eProdi" class="field-input" data-req></select><div class="field-err">Prodi wajib dipilih</div></div></div>
+            <div class="col-md-4"><div class="field-group"><label class="field-label">Angkatan <span class="req">*</span></label><select id="eAngkatan" class="field-input" data-req></select><div class="field-err">Wajib dipilih</div></div></div>
+            <div class="col-md-4"><div class="field-group"><label class="field-label">IPK <span class="req">*</span></label><input type="number" id="eIpk" class="field-input" step="0.01" min="0" max="4" data-req><div class="field-err">Wajib diisi</div></div></div>
+            <div class="col-md-4"><div class="field-group"><label class="field-label">Status <span class="req">*</span></label><select id="eStatus" class="field-input" data-req><option value="">— Pilih —</option><option>Aktif</option><option>Cuti</option><option>Lulus</option></select><div class="field-err">Wajib dipilih</div></div></div>
+            <div class="col-md-6"><div class="field-group"><label class="field-label">Email <span class="req">*</span></label><input type="email" id="eEmail" class="field-input" data-req><div class="field-err">Email wajib diisi</div></div></div>
+            <div class="col-md-6"><div class="field-group"><label class="field-label">No. HP <span class="req">*</span></label><input type="tel" id="eHp" class="field-input" data-req><div class="field-err">No. HP wajib diisi</div></div></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer"><button class="btn btn-ghost" data-bs-dismiss="modal">Batal</button><button class="btn btn-red" id="btnSaveEdit"><i class="bi bi-save2-fill"></i> Simpan</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETAIL -->
+<div class="modal fade modal-custom" id="mDetail" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title"><i class="bi bi-person-badge-fill me-2"></i>Detail Mahasiswa</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body" id="detailBody"></div>
+      <div class="modal-footer"><button class="btn btn-ghost" data-bs-dismiss="modal">Tutup</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HAPUS -->
+<div class="modal fade modal-custom" id="mDel" tabindex="-1">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header" style="background:#7F1D1D;border-bottom-color:#DC2626"><h5 class="modal-title"><i class="bi bi-trash-fill me-2"></i>Hapus Data</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+      <div class="modal-body text-center" style="padding:28px">
+        <div style="width:56px;height:56px;background:#FFF1F2;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#DC2626"><i class="bi bi-exclamation-triangle-fill"></i></div>
+        <p style="font-family:'Syne',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px">Hapus mahasiswa ini?</p>
+        <p style="font-size:13px;color:var(--mist-4)" id="delName"></p>
+        <p style="font-size:12px;color:#DC2626;font-weight:600;margin:0">Tindakan ini permanen.</p>
+      </div>
+      <div class="modal-footer justify-content-center gap-2">
+        <button class="btn btn-ghost" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-danger" id="btnConfDel"><i class="bi bi-trash-fill"></i> Ya, Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="/js/utils.js"></script>
+<script>
+let dt, allData=[], delId=null;
+
+function initFilters(){
+  const $fp=$('#fProdi').empty().append('<option value="">Semua Program Studi</option>');
+  FAKULTAS_PRODI.forEach(f=>{const $g=$(`<optgroup label="${f.fak}"></optgroup>`);f.prodi.forEach(p=>$g.append(`<option value="${p}">${p}</option>`));$fp.append($g);});
+  buildProdiOptions($('#eProdi'));
+  buildAngkatanOptions($('#eAngkatan'));
+  const y=new Date().getFullYear();
+  for(let i=y;i>=1990;i--)$('#fAngkatan').append(`<option value="${i}">${i}</option>`);
+}
+
+function loadData(){
+  API.get('/mahasiswa').done(r=>{allData=r.data;render(allData);})
+    .fail(()=>$(document.body).siToast('Gagal memuat data','err'));
+}
+
+function render(data){
+  $('#totalChip').text(`${data.length} records`);
+  $('#dbCount').text(data.length);
+  if(dt){dt.destroy();$('#dtMain tbody').empty();}
+  let rows='';
+  data.forEach((m,i)=>{
+    rows+=`<tr>
+      <td style="color:var(--mist-4);font-size:12px;font-weight:600">${String(i+1).padStart(2,'0')}</td>
+      <td>${nimBadge(m.nim)}</td>
+      <td><span style="font-weight:700">${m.nama}</span></td>
+      <td style="font-size:12px;color:var(--mist-4)">${m.prodi}</td>
+      <td style="font-weight:600">${m.angkatan}</td>
+      <td>${ipkBar(m.ipk)}</td>
+      <td>${statusBadge(m.status)}</td>
+      <td><div class="act-row">
+        <button class="act-btn" onclick="openDetail('${m.id}')" title="Detail"><i class="bi bi-eye-fill"></i></button>
+        <button class="act-btn" onclick="openEdit('${m.id}')" title="Edit"><i class="bi bi-pencil-fill"></i></button>
+        <button class="act-btn del" onclick="confirmDel('${m.id}','${m.nama.replace(/'/g,"&#39;")}')" title="Hapus"><i class="bi bi-trash-fill"></i></button>
+      </div></td>
+    </tr>`;
+  });
+  $('#dtMain tbody').html(rows);
+  dt=$('#dtMain').DataTable({
+    pageLength:10,lengthMenu:[5,10,25,50],
+    language:{search:'',searchPlaceholder:'Cari nama, NIM, prodi…',lengthMenu:'_MENU_ per halaman',info:'_START_–_END_ dari _TOTAL_ data',paginate:{previous:'‹',next:'›'},emptyTable:'Tidak ada data',zeroRecords:'Tidak ditemukan'},
+    columnDefs:[{orderable:false,targets:[0,7]}],order:[[1,'asc']],
+    dom:'<"d-flex align-items-center justify-content-between mb-3"fl>rt<"d-flex align-items-center justify-content-between mt-3"ip>'
+  });
+}
+
+function applyFilter(){const p=$('#fProdi').val(),s=$('#fStatus').val(),a=$('#fAngkatan').val();render(allData.filter(m=>(!p||m.prodi===p)&&(!s||m.status===s)&&(!a||String(m.angkatan)===a)));}
+$('#fProdi,#fStatus,#fAngkatan').on('change',applyFilter);
+$('#btnResetFilter').on('click',()=>{$('#fProdi,#fStatus,#fAngkatan').val('');render(allData);});
+
+function openDetail(id){
+  const m=allData.find(x=>x.id===id);if(!m)return;
+  $('#detailBody').html(`
+    <div style="text-align:center;padding:16px 0 20px">
+      <div style="width:64px;height:64px;background:var(--ink);border-radius:var(--r);margin:0 auto;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:26px;color:#FF4D6D;border:2px solid var(--red)">${m.nama.charAt(0).toUpperCase()}</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:18px;margin-top:10px">${m.nama}</div>
+      <div style="margin-top:6px">${statusBadge(m.status)}</div>
+    </div>
+    <div>
+      ${dr('NIM',nimBadge(m.nim))}${dr('Program Studi',m.prodi)}${dr('Angkatan',m.angkatan)}
+      ${dr('IPK',ipkBar(m.ipk))}${dr('Email',`<a href="mailto:${m.email}" style="color:var(--red)">${m.email}</a>`)}${dr('No. HP',m.no_hp)}
+    </div>`);
+  new bootstrap.Modal('#mDetail').show();
+}
+function dr(k,v){return`<div class="d-row"><span class="d-key">${k}</span><span class="d-val">${v}</span></div>`;}
+
+function openEdit(id){
+  const m=allData.find(x=>x.id===id);if(!m)return;
+  $('#eId').val(m.id);$('#eNim').val(m.nim);$('#eNama').val(m.nama);
+  buildProdiOptions($('#eProdi'),m.prodi);buildAngkatanOptions($('#eAngkatan'),m.angkatan);
+  $('#eIpk').val(m.ipk);$('#eStatus').val(m.status);$('#eEmail').val(m.email);$('#eHp').val(m.no_hp);
+  $('#fEdit').siReset();
+  new bootstrap.Modal('#mEdit').show();
+}
+
+$('#btnSaveEdit').on('click',function(){
+  if(!$('#fEdit').siValidate()){$(document.body).siToast('Lengkapi semua field','warn');return;}
+  const id=$('#eId').val();
+  const p={nim:$('#eNim').val().trim(),nama:$('#eNama').val().trim(),prodi:$('#eProdi').val(),angkatan:$('#eAngkatan').val(),ipk:parseFloat($('#eIpk').val()),status:$('#eStatus').val(),email:$('#eEmail').val().trim(),no_hp:$('#eHp').val().trim()};
+  $(this).prop('disabled',true).html('<i class="bi bi-hourglass-split"></i>');
+  API.put(`/mahasiswa/${id}`,p)
+    .done(()=>{bootstrap.Modal.getInstance('#mEdit').hide();$(document.body).siToast('Data berhasil diperbarui','ok');loadData();})
+    .fail(x=>$(document.body).siToast(x.responseJSON?.message||'Gagal','err'))
+    .always(()=>$('#btnSaveEdit').prop('disabled',false).html('<i class="bi bi-save2-fill"></i> Simpan'));
+});
+
+function confirmDel(id,nama){delId=id;$('#delName').text(nama);new bootstrap.Modal('#mDel').show();}
+
+$('#btnConfDel').on('click',function(){
+  if(!delId)return;
+  $(this).prop('disabled',true).html('<i class="bi bi-hourglass-split"></i>');
+  API.delete(`/mahasiswa/${delId}`)
+    .done(()=>{bootstrap.Modal.getInstance('#mDel').hide();$(document.body).siToast('Data berhasil dihapus','ok');loadData();delId=null;})
+    .fail(()=>$(document.body).siToast('Gagal menghapus','err'))
+    .always(()=>$('#btnConfDel').prop('disabled',false).html('<i class="bi bi-trash-fill"></i> Ya, Hapus'));
+});
+
+$(()=>{
+  initFilters();loadData();
+  $('#btnRefresh').on('click',()=>{loadData();$(document.body).siToast('Data diperbarui','ok');});
+});
+</script>
+</body>
+</html>
