@@ -13,4 +13,10 @@ $profil = [
     'minat'         => ['Web Development', 'Machine Learning', 'Vision Computer']
 ];
 
+if (empty($profil)) {
+    http_response_code(404);
+    echo json_encode(['error' => 'Data profil tidak ditemukan']);
+    exit;
+}
+
 echo json_encode($profil);
