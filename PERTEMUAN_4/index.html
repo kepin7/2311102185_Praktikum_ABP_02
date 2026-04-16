@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil Pengguna</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f5f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      color: #1a1a18;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid #e0dfd8;
+      border-radius: 12px;
+      padding: 2rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      color: #1a1a18;
+    }
+
+    button {
+      background: transparent;
+      border: 1px solid #c8c7c0;
+      border-radius: 8px;
+      padding: 0.6rem 1.25rem;
+      font-size: 14px;
+      cursor: pointer;
+      color: #1a1a18;
+      transition: background 0.15s;
+      margin-bottom: 1.25rem;
+    }
+
+    button:hover {
+      background: #f5f5f3;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #hasil-profil {
+      min-height: 60px;
+      background: #f5f5f3;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 14px;
+      color: #888780;
+      line-height: 1.7;
+    }
+
+    #hasil-profil.loaded {
+      color: #1a1a18;
+    }
+
+    .profil-nama {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .profil-detail {
+      font-size: 13px;
+      color: #5f5e5a;
+    }
+
+    .error {
+      color: #a32d2d;
+      background: #fcebeb;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Data Profil Pengguna</h1>
+
+    <button id="btn-tampil">Tampilkan Profil</button>
+
+    <div id="hasil-profil">
+      Data akan muncul di sini setelah tombol diklik...
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    $('#btn-tampil').on('click', function () {
+      const btn = $(this);
+      const hasil = $('#hasil-profil');
+
+      btn.prop('disabled', true).text('Memuat...');
+      hasil.removeClass('loaded').text('Mengambil data dari server...');
+
+      $.ajax({
+        url: 'data.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          hasil.addClass('loaded').html(
+            '<div class="profil-nama">' + data.nama + '</div>' +
+            '<div class="profil-detail">' +
+              data.prodi + ' &mdash; ' + data.universitas +
+            '</div>' +
+            '<div class="profil-detail" style="margin-top: 4px;">' +
+              'NIM: <strong>' + data.nim + '</strong> | Angkatan: <strong>' + data.angkatan + '</strong>' +
+            '</div>' +
+            '<div class="profil-detail" style="margin-top: 4px;">' +
+              'Email: ' + data.email + ' | Telepon: ' + data['no.telepon'] +
+            '</div>' +
+            '<div class="profil-detail" style="margin-top: 4px;">' +
+              'Minat: ' + data.minat.join(', ') +
+            '</div>'
+          );
+          btn.prop('disabled', false).text('Tampilkan Profil');
+        },
+        error: function (xhr) {
+            const response = xhr.responseJSON;
+            const pesan = response && response.error ? response.error : 'Terjadi kesalahan';
+            hasil.html('<div class="error">Gagal mengambil data: ' + pesan + '</div>');
+            btn.prop('disabled', false).text('Coba Lagi');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
