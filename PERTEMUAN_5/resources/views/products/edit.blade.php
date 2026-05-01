@@ -81,7 +81,7 @@
                     </label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-medium">Rp</span>
-                        <input type="number" name="price" value="{{ old('price', $product->price) }}" min="0" step="100"
+                        <input type="number" name="price" value="{{ old('price', $product->price) }}" min="0" step="1"
                                class="w-full pl-10 pr-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent
                                       {{ $errors->has('price') ? 'border-red-400 bg-red-50' : 'border-gray-200' }}">
                     </div>
@@ -95,7 +95,7 @@
                     </label>
                     <div class="relative">
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400 font-medium">Rp</span>
-                        <input type="number" name="cost_price" value="{{ old('cost_price', $product->cost_price) }}" min="0" step="100"
+                        <input type="number" name="cost_price" value="{{ old('cost_price', $product->cost_price) }}" min="0" step="1"
                                class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent">
                     </div>
                 </div>
