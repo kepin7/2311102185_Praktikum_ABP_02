@@ -1,4 +1,4 @@
-# 🏪 Inventaris Toko Pak Cokomi & Mas Wowo
+# Inventaris Toko Pak Cokomi & Mas Wowo
 
 > Sistem manajemen inventaris berbasis web menggunakan Laravel 13 dengan autentikasi Breeze dan sistem role berbasis kolom database (Admin, Staff, Customer).
 
@@ -6,92 +6,70 @@
 
 ---
 
-## 📸 Screenshots
+## Screenshots Output
 
 ### Halaman Login
-```
-[ Screenshot Login Page ]
-Simpan file gambar sebagai: docs/screenshots/login.png
-Lalu ganti baris ini dengan: ![Login](docs/screenshots/login.png)
-```
+
+<img width="1919" height="1028" alt="image" src="https://github.com/user-attachments/assets/e44295fa-7a1d-486d-b423-c358bc06b001" />
 
 ---
 
 ### Halaman Register
-```
-[ Screenshot Register Page ]
-Simpan file gambar sebagai: docs/screenshots/register.png
-Lalu ganti baris ini dengan: ![Register](docs/screenshots/register.png)
-```
+
+<img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/1ae7519f-09fd-4313-821d-1ebd89c3fda0" />
 
 ---
 
 ### Halaman Inventaris Produk — Tampilan Admin
-```
-[ Screenshot Halaman Index Login sebagai Admin (Pak Cokomi) ]
-Simpan file gambar sebagai: docs/screenshots/index-admin.png
-Lalu ganti baris ini dengan: ![Index Admin](docs/screenshots/index-admin.png)
-```
+
+<img width="1919" height="1025" alt="image" src="https://github.com/user-attachments/assets/54649439-b4ac-4dd8-b9c4-56c99acc8fd6" />
 
 ---
 
 ### Halaman Inventaris Produk — Tampilan Staff
-```
-[ Screenshot Halaman Index Login sebagai Staff (Mas Wowo) ]
-Simpan file gambar sebagai: docs/screenshots/index-staff.png
-Lalu ganti baris ini dengan: ![Index Staff](docs/screenshots/index-staff.png)
-```
+
+<img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/96aa45ba-870f-4df6-a44e-8d293bccf566" />
 
 ---
 
 ### Halaman Inventaris Produk — Tampilan Customer
-```
-[ Screenshot Halaman Index Login sebagai Customer (view only) ]
-Simpan file gambar sebagai: docs/screenshots/index-customer.png
-Lalu ganti baris ini dengan: ![Index Customer](docs/screenshots/index-customer.png)
-```
+
+<img width="1919" height="1027" alt="image" src="https://github.com/user-attachments/assets/88970830-54c9-45de-b319-be5c214bb3df" />
 
 ---
 
 ### Form Tambah Produk
-```
-[ Screenshot Form Tambah Produk ]
-Simpan file gambar sebagai: docs/screenshots/create.png
-Lalu ganti baris ini dengan: ![Create](docs/screenshots/create.png)
-```
+
+<img width="1919" height="1020" alt="image" src="https://github.com/user-attachments/assets/7b24b588-fa02-4e96-ac44-f270282393ff" />
 
 ---
 
 ### Form Edit Produk
-```
-[ Screenshot Form Edit Produk ]
-Simpan file gambar sebagai: docs/screenshots/edit.png
-Lalu ganti baris ini dengan: ![Edit](docs/screenshots/edit.png)
-```
+
+<img width="1919" height="1026" alt="image" src="https://github.com/user-attachments/assets/b631ef88-92ec-4328-b32b-6ec972a406a0" />
 
 ---
 
 ### Modal Konfirmasi Hapus
-```
-[ Screenshot Modal Konfirmasi Hapus ]
-Simpan file gambar sebagai: docs/screenshots/delete-modal.png
-Lalu ganti baris ini dengan: ![Delete Modal](docs/screenshots/delete-modal.png)
-```
+
+<img width="1919" height="1025" alt="image" src="https://github.com/user-attachments/assets/6912657f-34bd-4e28-93dd-75c618427d99" />
 
 ---
 
 ### Fitur Search & Filter
-```
-[ Screenshot Fitur Search & Filter ]
-Simpan file gambar sebagai: docs/screenshots/filter.png
-Lalu ganti baris ini dengan: ![Filter](docs/screenshots/filter.png)
-```
+
+<img width="1919" height="1022" alt="image" src="https://github.com/user-attachments/assets/3a333c0d-5d2c-41b6-bc1b-503225c40e43" />
+
+---
+
+<img width="1919" height="1023" alt="image" src="https://github.com/user-attachments/assets/1d61b4a5-92c5-4c2b-ae75-9757a8f47556" />
+
 
 <br>
 
 ---
 
-## 📦 Fitur Utama
+## Fitur Utama
 
 - **Autentikasi** — Login, register, logout via Laravel Breeze
 - **Sistem Role** — Admin, Staff, Customer berbasis kolom `role` di tabel users
@@ -108,7 +86,7 @@ Lalu ganti baris ini dengan: ![Filter](docs/screenshots/filter.png)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Teknologi |
 |---|---|
@@ -125,7 +103,7 @@ Lalu ganti baris ini dengan: ![Filter](docs/screenshots/filter.png)
 
 ---
 
-## 👤 Hak Akses Per Role
+## Hak Akses Per Role
 
 | Fitur | Admin (Pak Cokomi) | Staff (Mas Wowo) | Customer |
 |---|:---:|:---:|:---:|
@@ -141,7 +119,7 @@ Lalu ganti baris ini dengan: ![Filter](docs/screenshots/filter.png)
 
 ---
 
-## 🚀 Cara Instalasi
+## Cara Instalasi
 
 ### Prasyarat
 - PHP >= 8.2
@@ -151,8 +129,8 @@ Lalu ganti baris ini dengan: ![Filter](docs/screenshots/filter.png)
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/hizkiakevin8/inventaris-cokomi.git
-cd inventaris-cokomi
+git clone https://github.com/kepin7/2311102185_Praktikum_ABP_02.git
+cd PERTEMUAN_5
 ```
 
 ### 2. Install Dependensi PHP
@@ -171,7 +149,7 @@ Edit file `.env`:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=inventaris_cokomi
+DB_DATABASE=pertemuan_5
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -179,7 +157,7 @@ DB_PASSWORD=
 ### 4. Buat Database
 Buka phpMyAdmin, buat database baru:
 ```sql
-CREATE DATABASE inventaris_cokomi;
+CREATE DATABASE pertemuan_5;
 ```
 
 ### 5. Jalankan Migration + Seeder
@@ -200,12 +178,12 @@ Buka browser: **http://localhost:8000**
 
 ---
 
-## 👤 Akun Default
+## Akun Default
 
 | Nama | Email | Password | Role |
 |---|---|---|---|
-| Pak Cokomi | cokomi@toko.com | password | Admin |
-| Mas Wowo | wowo@toko.com | password | Staff |
+| Pak Cokomi | cokomi@toko.com | cokomi123 | Admin |
+| Mas Wowo | wowo@toko.com | wowo123 | Staff |
 | *(Register sendiri)* | bebas | bebas | Customer |
 
 > **Customer** dapat mendaftar sendiri melalui halaman Register. Role customer diberikan otomatis saat registrasi.
@@ -214,7 +192,7 @@ Buka browser: **http://localhost:8000**
 
 ---
 
-## 📁 Struktur Project
+## Struktur Project
 
 ```
 app/
@@ -254,7 +232,7 @@ routes/
 
 ---
 
-## 🔗 Route List
+## Route List
 
 | Method | URI | Controller | Akses |
 |---|---|---|---|
@@ -271,56 +249,3 @@ routes/
 <br>
 
 ---
-
-## 🗂️ Kategori & Satuan Produk
-
-**Kategori:** Makanan, Minuman, Snack, Kebutuhan Rumah, Peralatan, Lainnya
-
-**Satuan:** pcs, kg, gram, liter, ml, lusin, pak, dus
-
-**Indikator Stok:**
-- 🟢 **Tersedia** — stok > 10
-- 🟡 **Menipis** — stok 1–10
-- 🔴 **Habis** — stok = 0
-
-<br>
-
----
-
-## ⚙️ Perintah Berguna
-
-```bash
-# Reset database + isi ulang data dummy
-php artisan migrate:fresh --seed
-
-# Cek semua route yang terdaftar
-php artisan route:list
-
-# Cek status migration
-php artisan migrate:status
-
-# Jalankan server development
-php artisan serve
-```
-
-<br>
-
----
-
-## 👨‍💻 Informasi Pengembang
-
-| | |
-|---|---|
-| **Nama** | [Nama Kamu] |
-| **NIM** | 2311102185 |
-| **Kelas** | [Kelas] |
-| **Mata Kuliah** | Praktikum Aplikasi Berbasis Platform |
-| **Institusi** | Telkom University Purwokerto |
-| **Tahun** | 2025/2026 |
-
-<br>
-
----
-
-> Dibuat sebagai tugas praktikum mata kuliah Aplikasi Berbasis Platform  
-> Telkom University Purwokerto — Semester 6
