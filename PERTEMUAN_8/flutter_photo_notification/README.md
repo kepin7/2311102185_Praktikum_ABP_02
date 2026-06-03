@@ -1,22 +1,3 @@
-# Laporan Praktikum ABP — Camera, Media & Notifikasi
-
-**Nama:** [Nama Kamu]  
-**NIM:** 2311102185  
-**Matkul:** Pemrograman Aplikasi Berbasis Platform  
-**Topik:** Kamera, Galeri, dan Notifikasi Lokal  
-
----
-
-## Daftar Isi
-
-1. [Deskripsi Aplikasi](#deskripsi-aplikasi)
-2. [Screenshot Hasil](#screenshot-hasil)
-3. [Penjelasan Widget](#penjelasan-widget)
-4. [Setup & Konfigurasi](#setup--konfigurasi)
-5. [Struktur File](#struktur-file)
-
----
-
 ## Deskripsi Aplikasi
 
 Aplikasi Flutter sederhana yang menggabungkan dua fitur utama:
@@ -24,77 +5,39 @@ Aplikasi Flutter sederhana yang menggabungkan dua fitur utama:
 1. **Camera & Media** — Mengambil foto langsung dari kamera atau memilih foto dari galeri menggunakan `camera` dan `image_picker` package.
 2. **Notifikasi Lokal** — Setelah foto berhasil diambil atau dipilih, aplikasi secara otomatis menampilkan notifikasi lokal menggunakan `flutter_local_notifications`.
 
----
-
-## Screenshot Hasil
-
-> 📌 **Petunjuk:** Letakkan screenshot kamu di bawah masing-masing label sesuai kondisi yang ditampilkan.
-
----
-
 ### 1. Halaman Utama (Belum Ada Foto)
 
-<!-- LETAKKAN SCREENSHOT HALAMAN UTAMA (KOSONG) DI SINI -->
-<!-- Contoh: ![Halaman Utama](screenshots/home_empty.jpg) -->
-
-```
-[ SS halaman utama sebelum foto diambil/dipilih ]
-```
+<img width="1080" height="2400" alt="image" src="https://github.com/user-attachments/assets/a39e2ea8-61a0-428f-b139-c840dabd3f81" />
 
 ---
 
 ### 2. Halaman Kamera (Live Preview)
 
-<!-- LETAKKAN SCREENSHOT TAMPILAN KAMERA DI SINI -->
-<!-- Contoh: ![Halaman Kamera](screenshots/camera_preview.jpg) -->
-
-```
-[ SS tampilan kamera saat live preview aktif ]
-```
+<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/c8e98d8b-0bfd-46b0-9b28-802abea69b84" />
 
 ---
 
 ### 3. Foto Berhasil Diambil dari Kamera
 
-<!-- LETAKKAN SCREENSHOT FOTO DARI KAMERA DI SINI -->
-<!-- Contoh: ![Foto Kamera](screenshots/foto_kamera.jpg) -->
-
-```
-[ SS foto yang ditampilkan setelah ambil dari kamera ]
-```
+<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/06cb1fb6-2e0e-4b0d-9903-22c6deb74d4a" />
 
 ---
 
 ### 4. Foto Berhasil Dipilih dari Galeri
 
-<!-- LETAKKAN SCREENSHOT FOTO DARI GALERI DI SINI -->
-<!-- Contoh: ![Foto Galeri](screenshots/foto_galeri.jpg) -->
-
-```
-[ SS foto yang ditampilkan setelah pilih dari galeri ]
-```
+<img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/43dd80af-65f0-4c2a-9cdb-fb07d6eec660" />
 
 ---
 
 ### 5. Notifikasi Muncul (Setelah Foto dari Kamera)
 
-<!-- LETAKKAN SCREENSHOT NOTIFIKASI KAMERA DI SINI -->
-<!-- Contoh: ![Notif Kamera](screenshots/notif_kamera.jpg) -->
-
-```
-[ SS notifikasi "Foto Berhasil Diambil!" di notification bar ]
-```
+<img width="574" height="275" alt="image" src="https://github.com/user-attachments/assets/e38e65e0-b7cc-4389-ab68-0196f738be69" />
 
 ---
 
 ### 6. Notifikasi Muncul (Setelah Foto dari Galeri)
 
-<!-- LETAKKAN SCREENSHOT NOTIFIKASI GALERI DI SINI -->
-<!-- Contoh: ![Notif Galeri](screenshots/notif_galeri.jpg) -->
-
-```
-[ SS notifikasi "Foto Berhasil Dipilih!" di notification bar ]
-```
+<img width="684" height="321" alt="image" src="https://github.com/user-attachments/assets/ec735f4c-d5af-4e4c-8c3a-23b970cd6077" />
 
 ---
 
@@ -103,19 +46,29 @@ Aplikasi Flutter sederhana yang menggabungkan dua fitur utama:
 ### `main()` — Entry Point
 
 ```dart
+List<CameraDescription> cameras = <CameraDescription>[];
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _cameras = await availableCameras();
-  await flutterLocalNotificationsPlugin.initialize(initSettings);
+
+  try {
+    cameras = await availableCameras();
+  } catch (_) {
+    cameras = <CameraDescription>[];
+  }
+
+  await NotificationService.init();
   runApp(const MyApp());
 }
 ```
 
 | Fungsi | Penjelasan |
 |--------|------------|
-| `WidgetsFlutterBinding.ensureInitialized()` | Memastikan Flutter binding siap sebelum memanggil metode native (kamera, notifikasi) |
-| `availableCameras()` | Mengambil daftar semua kamera yang tersedia di perangkat (depan/belakang) |
-| `flutterLocalNotificationsPlugin.initialize()` | Menginisialisasi plugin notifikasi dengan icon launcher default |
+| `WidgetsFlutterBinding.ensureInitialized()` | Memastikan Flutter binding siap sebelum memanggil fitur native seperti kamera dan notifikasi |
+| `availableCameras()` | Mengambil daftar kamera yang tersedia pada perangkat dan menyimpannya ke variabel global `cameras` |
+| `try-catch` pada kamera | Mencegah aplikasi langsung crash jika kamera tidak tersedia atau izin kamera belum diberikan |
+| `NotificationService.init()` | Menginisialisasi plugin notifikasi lokal dan meminta izin notifikasi pada Android 13+ |
+| `runApp(const MyApp())` | Menjalankan aplikasi Flutter dengan root widget `MyApp` |
 
 ---
 
@@ -123,10 +76,20 @@ Future<void> main() async {
 
 ```dart
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(colorScheme: ..., useMaterial3: true),
+      debugShowCheckedModeBanner: false,
+      title: 'Camera & Notifikasi',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF1A1A2E),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
       home: const HomePage(),
     );
   }
@@ -137,9 +100,10 @@ class MyApp extends StatelessWidget {
 
 | Widget | Penjelasan |
 |--------|------------|
-| `MaterialApp` | Root widget yang menyediakan tema, navigasi, dan konfigurasi app secara global |
-| `ThemeData` | Mendefinisikan tema visual (warna, font, komponen Material 3) |
-| `ColorScheme.fromSeed` | Membuat skema warna otomatis dari satu warna seed dengan dukungan dark mode |
+| `MaterialApp` | Root widget yang menyediakan tema, navigasi, dan konfigurasi aplikasi secara global |
+| `ThemeData` | Mendefinisikan tema visual aplikasi, termasuk warna dasar, mode gelap, AppBar, dan Material 3 |
+| `ColorScheme.fromSeed` | Membuat skema warna otomatis dari satu warna utama atau seed color |
+| `HomePage` | Halaman utama aplikasi yang menampilkan tombol kamera, tombol galeri, dan preview foto |
 
 ---
 
@@ -151,271 +115,164 @@ Widget `StatefulWidget` sebagai halaman utama yang menampilkan tombol aksi dan p
 
 | Variabel | Tipe | Fungsi |
 |----------|------|--------|
-| `_selectedImage` | `File?` | Menyimpan file foto yang dipilih/diambil |
-| `_isLoading` | `bool` | Indikator loading saat memilih dari galeri |
-| `_animController` | `AnimationController` | Mengontrol animasi fade-in saat foto muncul |
-| `_fadeAnim` | `Animation<double>` | Animasi opacity (0.0 → 1.0) |
+| `_picker` | `ImagePicker` | Objek untuk membuka galeri dan memilih gambar dari perangkat |
+| `_selectedImage` | `File?` | Menyimpan file foto yang dipilih dari galeri atau diambil dari kamera |
+| `_isLoading` | `bool` | Indikator loading saat proses memilih foto dari galeri sedang berjalan |
+| `_animController` | `AnimationController` | Mengontrol animasi fade-in saat foto berhasil ditampilkan |
+| `_fadeAnim` | `Animation<double>` | Animasi opacity dari 0.0 ke 1.0 untuk preview foto |
 
 **Method penting:**
 
 | Method | Penjelasan |
 |--------|------------|
-| `_openCamera()` | Navigasi ke `CameraCapturePage`, menerima path foto via `Navigator.pop()` |
-| `_pickFromGallery()` | Membuka galeri menggunakan `ImagePicker`, mengambil hasil sebagai `XFile` |
-| `showPhotoNotification()` | Memanggil fungsi global untuk menampilkan notifikasi lokal |
+| `_openCamera()` | Mengecek ketersediaan kamera, membuka `CameraPage`, menerima path foto dari `Navigator.pop()`, lalu menampilkan notifikasi |
+| `_pickFromGallery()` | Membuka galeri menggunakan `ImagePicker`, mengambil hasil sebagai `XFile`, lalu menampilkan foto dan notifikasi |
+| `_setImage(File file)` | Mengubah state `_selectedImage`, menghentikan loading, dan menjalankan animasi preview foto |
+| `_showSnackBar(String message)` | Menampilkan pesan singkat jika kamera tidak tersedia atau proses memilih foto gagal |
+| `NotificationService.showPhotoNotification()` | Memanggil service untuk menampilkan notifikasi setelah foto berhasil diambil atau dipilih |
 
 **Widget yang digunakan:**
 
 | Widget | Penjelasan |
 |--------|------------|
 | `Scaffold` | Struktur dasar halaman dengan AppBar dan body |
-| `SafeArea` | Menghindari konten masuk ke area status bar / notch |
-| `SingleChildScrollView` | Memungkinkan halaman di-scroll jika konten melebihi layar |
-| `Column` | Menyusun widget secara vertikal |
-| `AnimationController` + `FadeTransition` | Animasi fade-in foto saat pertama kali ditampilkan |
+| `SafeArea` | Menghindari konten masuk ke area status bar atau notch |
+| `SingleChildScrollView` | Memungkinkan halaman di-scroll jika konten melebihi tinggi layar |
+| `Column` | Menyusun komponen halaman secara vertikal |
+| `HeaderSection` | Menampilkan banner informasi di bagian atas halaman |
+| `ActionButton` | Tombol custom untuk membuka kamera dan memilih foto dari galeri |
+| `PhotoPreview` | Area untuk menampilkan kondisi kosong, loading, atau foto yang sudah dipilih |
 
 ---
 
-### `_HeaderSection` — Bagian Header
+### `HeaderSection` — Bagian Header
 
-Widget `StatelessWidget` yang menampilkan informasi singkat di bagian atas halaman.
+Widget `StatelessWidget` yang menampilkan informasi singkat di bagian atas halaman utama.
 
 | Widget | Penjelasan |
 |--------|------------|
-| `Container` | Kotak dengan gradient background, border, dan radius untuk efek card |
-| `LinearGradient` | Gradien dua warna dari kiri-atas ke kanan-bawah |
-| `Row` | Menyusun icon dan teks secara horizontal |
-| `Icon` | Ikon kamera dari Material Icons |
+| `Container` | Kotak dengan gradient background, border, padding, dan radius untuk efek card |
+| `LinearGradient` | Gradien warna dari kiri atas ke kanan bawah |
+| `Row` | Menyusun ikon dan teks secara horizontal |
+| `Icon(Icons.photo_camera_rounded)` | Ikon kamera yang menggambarkan fitur utama aplikasi |
+| `Text` | Menampilkan judul `Ambil & Pilih Foto` dan deskripsi singkat bahwa notifikasi muncul otomatis setelah foto berhasil |
 
 ---
 
-### `_ActionButton` — Tombol Aksi
+### `ActionButton` — Tombol Aksi
 
-Widget `StatelessWidget` custom yang merepresentasikan tombol interaktif.
+Widget `StatelessWidget` custom yang merepresentasikan tombol interaktif untuk membuka kamera atau memilih foto dari galeri.
 
 ```dart
-_ActionButton(
+ActionButton(
   icon: Icons.camera_alt_rounded,
   label: 'Buka Kamera',
   subtitle: 'Ambil foto langsung dari kamera',
-  onTap: _openCamera,
-  color: Color(0xFF4F46E5),
+  onTap: _isLoading ? null : _openCamera,
+  color: const Color(0xFF4F46E5),
 )
 ```
 
 | Widget | Penjelasan |
 |--------|------------|
-| `Material` + `InkWell` | Kombinasi untuk efek ripple saat tombol ditekan |
-| `AnimatedContainer` | Container dengan transisi animasi saat properti berubah (misal: disabled state) |
+| `Material` + `InkWell` | Kombinasi untuk memberi efek ripple saat tombol ditekan |
+| `AnimatedContainer` | Container dengan transisi animasi saat kondisi tombol berubah, misalnya ketika disabled |
 | `Row` | Menyusun icon, teks, dan arrow secara horizontal |
+| `Icon` | Menampilkan ikon sesuai aksi, misalnya kamera atau galeri |
 | `Icon(Icons.arrow_forward_ios_rounded)` | Indikator arah navigasi di sisi kanan tombol |
 
 ---
 
-### `_PreviewArea` — Area Preview Foto
+### `PhotoPreview` — Area Preview Foto
 
 Widget `StatelessWidget` yang menampilkan kondisi foto: kosong, loading, atau menampilkan foto.
 
 | Kondisi | Widget yang Ditampilkan |
 |---------|------------------------|
 | `isLoading == true` | `CircularProgressIndicator` |
-| `image == null` | `_EmptyPlaceholder` (placeholder teks + icon) |
-| `image != null` | `FadeTransition` → `Image.file()` |
+| `image == null` | `_EmptyPlaceholder` berisi icon dan teks `Belum ada foto` |
+| `image != null` | `FadeTransition` yang menampilkan `Image.file()` dan badge `Berhasil` |
 
 | Widget | Penjelasan |
 |--------|------------|
 | `FadeTransition` | Menerapkan animasi opacity yang dikontrol oleh `Animation<double>` |
 | `Image.file()` | Menampilkan gambar dari path file lokal di perangkat |
-| `Stack` | Menumpuk widget (foto + badge "Berhasil") di posisi yang sama |
+| `Stack` | Menumpuk foto dan badge `Berhasil` dalam satu area preview |
 | `Positioned` | Menempatkan badge di sudut kanan bawah foto |
-| `ClipRect` / `clipBehavior: Clip.hardEdge` | Memotong konten agar tidak keluar dari border radius container |
+| `clipBehavior: Clip.hardEdge` | Memotong gambar agar mengikuti bentuk container dengan border radius |
 
 ---
 
-### `CameraCapturePage` — Halaman Kamera
+### `CameraPage` — Halaman Kamera
 
 Widget `StatefulWidget` untuk menampilkan live preview kamera dan tombol shutter.
 
 **Setup:**
 ```dart
-_controller = CameraController(widget.camera, ResolutionPreset.high);
+_controller = CameraController(
+  widget.camera,
+  ResolutionPreset.high,
+  enableAudio: false,
+);
 _initFuture = _controller.initialize();
 ```
 
 | Widget | Penjelasan |
 |--------|------------|
-| `CameraPreview` | Menampilkan live feed dari kamera secara real-time (dari package `camera`) |
-| `FutureBuilder` | Menunggu inisialisasi kamera selesai sebelum menampilkan preview |
-| `Stack` | Menumpuk preview kamera dengan overlay tombol back dan shutter |
+| `CameraController` | Mengontrol kamera yang digunakan untuk preview dan pengambilan foto |
+| `CameraPreview` | Menampilkan live feed dari kamera secara real-time dari package `camera` |
+| `FutureBuilder` | Menunggu proses inisialisasi kamera selesai sebelum menampilkan preview |
+| `Stack` | Menumpuk preview kamera dengan overlay tombol kembali dan tombol shutter |
 | `GestureDetector` | Mendeteksi tap pada tombol shutter dan tombol kembali |
-| `AnimatedContainer` | Memberikan efek visual saat tombol shutter ditekan |
+| `AnimatedContainer` | Memberikan efek visual pada tombol shutter, terutama saat proses mengambil foto |
+| `_CameraErrorView` | Tampilan alternatif jika kamera gagal dibuka atau izin kamera belum diberikan |
 
 **Alur pengambilan foto:**
 ```
-tap shutter → _takePicture() → controller.takePicture() → Navigator.pop(context, image.path)
-                                                              ↓
-                                                   HomePage._openCamera() menerima path
-                                                   → setState → showPhotoNotification()
+tap shutter → _takePicture() → _controller.takePicture() → Navigator.pop(context, image.path)
+                                                                  ↓
+                                                       HomePage._openCamera() menerima path
+                                                       → _setImage(File(path))
+                                                       → NotificationService.showPhotoNotification(fromCamera: true)
 ```
 
 ---
 
-### `showPhotoNotification()` — Fungsi Notifikasi
+### `NotificationService.showPhotoNotification()` — Fungsi Notifikasi
 
 ```dart
-Future<void> showPhotoNotification({required bool fromCamera}) async {
+static Future<void> showPhotoNotification({
+  required bool fromCamera,
+}) async {
   const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-    'photo_channel',      // Channel ID (unik)
-    'Photo Notifications', // Channel Name
+    'photo_channel',
+    'Photo Notifications',
+    channelDescription: 'Notifikasi setelah mengambil atau memilih foto',
     importance: Importance.high,
     priority: Priority.high,
+    ticker: 'foto berhasil',
+    icon: '@mipmap/ic_launcher',
   );
-  await flutterLocalNotificationsPlugin.show(
-    id: 0,
-    title: fromCamera ? '📸 Foto Berhasil Diambil!' : '🖼️ Foto Berhasil Dipilih!',
-    body: '...',
-    notificationDetails: NotificationDetails(android: androidDetails),
+
+  await _plugin.show(
+    DateTime.now().millisecondsSinceEpoch ~/ 1000,
+    fromCamera ? '📸 Foto Berhasil Diambil!' : '🖼️ Foto Berhasil Dipilih!',
+    fromCamera
+        ? 'Foto dari kamera sudah siap ditampilkan.'
+        : 'Foto dari galeri sudah siap ditampilkan.',
+    const NotificationDetails(android: androidDetails),
   );
 }
 ```
 
 | Parameter | Penjelasan |
 |-----------|------------|
-| `channel_id` (`'photo_channel'`) | ID unik untuk notification channel (wajib di Android 8+) |
-| `Importance.high` | Notifikasi muncul di bagian atas layar sebagai heads-up notification |
-| `Priority.high` | Prioritas tinggi agar notifikasi segera disampaikan |
-| `id: 0` | ID notifikasi; nilai sama = notifikasi lama diganti (tidak menumpuk) |
-| `fromCamera` | Parameter bool untuk membedakan isi pesan notifikasi |
+| `photo_channel` | ID unik untuk notification channel pada Android 8+ |
+| `Photo Notifications` | Nama channel notifikasi yang digunakan aplikasi |
+| `channelDescription` | Deskripsi channel untuk menjelaskan fungsi notifikasi |
+| `Importance.high` | Membuat notifikasi memiliki tingkat kepentingan tinggi |
+| `Priority.high` | Membuat notifikasi segera ditampilkan oleh sistem |
+| `DateTime.now().millisecondsSinceEpoch ~/ 1000` | ID notifikasi dinamis agar notifikasi baru tidak selalu menimpa notifikasi sebelumnya |
+| `fromCamera` | Parameter boolean untuk membedakan judul dan isi notifikasi kamera atau galeri |
 
 ---
-
-## Setup & Konfigurasi
-
-### 1. Tambahkan Dependencies
-
-Jalankan di terminal root project:
-
-```bash
-flutter pub add camera
-flutter pub add image_picker
-flutter pub add flutter_local_notifications
-```
-
-Atau gunakan `pubspec.yaml`:
-
-```yaml
-dependencies:
-  camera: ^0.11.0+2
-  image_picker: ^1.1.2
-  flutter_local_notifications: ^17.2.4
-```
-
-Lalu jalankan:
-```bash
-flutter pub get
-```
-
----
-
-### 2. Konfigurasi AndroidManifest.xml
-
-File: `android/app/src/main/AndroidManifest.xml`
-
-Tambahkan permission berikut **di atas tag `<application>`**:
-
-```xml
-<uses-permission android:name="android.permission.CAMERA" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-    android:maxSdkVersion="32" />
-<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-<uses-permission android:name="android.permission.VIBRATE" />
-```
-
-Tambahkan `<queries>` untuk Android 11+ (sebelum `</manifest>`):
-
-```xml
-<queries>
-    <intent>
-        <action android:name="android.media.action.IMAGE_CAPTURE" />
-    </intent>
-    <intent>
-        <action android:name="android.intent.action.GET_CONTENT" />
-    </intent>
-</queries>
-```
-
----
-
-### 3. Konfigurasi build.gradle.kts (App Level)
-
-File: `android/app/build.gradle.kts`
-
-```kotlin
-android {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        isCoreLibraryDesugaringEnabled = true   // ← wajib untuk flutter_local_notifications
-    }
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 30   // Android 11
-        multiDexEnabled = true
-    }
-}
-
-dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
-}
-```
-
-> ⚠️ **JDK 23:** Meski kamu menggunakan JDK 23, `sourceCompatibility` dan `targetCompatibility` tetap diset ke `VERSION_17` karena Android Gradle Plugin (AGP) saat ini belum sepenuhnya mendukung JDK 23 sebagai target. JDK 23 akan tetap digunakan sebagai **runtime** untuk build tool-nya.
-
----
-
-### 4. Jalankan Aplikasi
-
-```bash
-# Pastikan HP sudah terhubung via USB dengan USB Debugging aktif
-flutter devices
-
-# Jalankan di device
-flutter run
-```
-
----
-
-## Struktur File
-
-```
-praktikum_camera_notif/
-├── lib/
-│   ├── main.dart                        ← Entry point, inisialisasi kamera & notifikasi
-│   ├── pages/
-│   │   ├── home_page.dart               ← Halaman utama (tombol + preview foto)
-│   │   └── camera_page.dart             ← Halaman live kamera & shutter
-│   ├── widgets/
-│   │   ├── action_button.dart           ← Tombol aksi (kamera / galeri)
-│   │   ├── header_section.dart          ← Banner info di bagian atas
-│   │   └── photo_preview.dart           ← Area pratinjau foto + badge sukses
-│   └── services/
-│       └── notification_service.dart    ← Logika inisialisasi & tampilkan notifikasi
-├── android/
-│   └── app/
-│       ├── src/main/
-│       │   └── AndroidManifest.xml      ← Permission & konfigurasi Android
-│       └── build.gradle.kts             ← Gradle config (desugaring, SDK target)
-├── pubspec.yaml                         ← Dependencies Flutter
-└── README.md                            ← Laporan ini
-```
-
----
-
-## Referensi
-
-- [camera package — pub.dev](https://pub.dev/packages/camera)
-- [image_picker package — pub.dev](https://pub.dev/packages/image_picker)
-- [flutter_local_notifications package — pub.dev](https://pub.dev/packages/flutter_local_notifications)
-- [Android Notification Guide — developer.android.com](https://developer.android.com/develop/ui/views/notifications)
-- Kode referensi: [kode-Praktikum-ABP-2025](https://github.com/wafanakha/kode-Praktikum-ABP-2025)
