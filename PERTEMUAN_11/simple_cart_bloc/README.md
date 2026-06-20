@@ -12,11 +12,11 @@ Aplikasi ini adalah simulasi kasir kedai kopi sederhana yang terdiri dari:
 
 State management sepenuhnya menggunakan **Cubit** dari package `flutter_bloc` (bagian dari keluarga BLoC, versi yang lebih sederhana karena tanpa Event, hanya berisi method biasa yang memanggil `emit()`).
 
-![alt text](image-2.png)
+<img width="399" height="835" alt="image" src="https://github.com/user-attachments/assets/0d05c9f0-7f2c-4959-bfc2-cb62a6f7178b" />
 
-![alt text](image-3.png)
+<img width="399" height="836" alt="image" src="https://github.com/user-attachments/assets/b5457f38-8f6f-4b70-8fa2-f01ed432e4e6" />
 
-![alt text](image-4.png)
+<img width="399" height="835" alt="image" src="https://github.com/user-attachments/assets/f358cb32-0421-436a-885f-d17a8804f8d9" />
 
 ---
 
